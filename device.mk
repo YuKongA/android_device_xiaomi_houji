@@ -43,6 +43,13 @@ PRODUCT_PACKAGES += \
 # Boot animation
 TARGET_BOOT_ANIMATION_RES := 1200
 
+# Health
+PRODUCT_PACKAGES += \
+    android.hardware.health-service.qti \
+    android.hardware.health-service.qti_recovery \
+    android.hardware.health@1.0.vendor \
+    android.hardware.health@2.1.vendor
+
 # Input
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/idc/uinput-fpc.idc:$(TARGET_COPY_OUT_SYSTEM)/usr/idc/uinput-fpc.idc \
