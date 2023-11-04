@@ -7,6 +7,9 @@
 # Call the proprietary setup.
 $(call inherit-product, vendor/xiaomi/houji/houji-vendor.mk)
 
+# Inherit Virtual A/B compression makefiles.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+
 # AAPT
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
