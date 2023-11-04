@@ -1,4 +1,4 @@
-<compatibility-matrix version="7.0" type="framework">
+<compatibility-matrix version="1.0" type="framework">
     <hal format="aidl" optional="true">
         <name>android.hardware.authsecret.qti.spu</name>
         <interface>
@@ -470,26 +470,6 @@
         <interface>
             <name>IWifiMyFtm</name>
             <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
-        <name>vendor.qti.hardware.wifidisplaysession</name>
-        <version>1.0</version>
-        <interface>
-            <name>IWifiDisplaySession</name>
-            <instance>wifidisplaysession</instance>
-        </interface>
-        <interface>
-            <name>IWifiDisplaySessionAudioTrack</name>
-            <instance>wifidisplaysessionaudiotrack</instance>
-        </interface>
-        <interface>
-            <name>IWifiDisplaySessionImageTrack</name>
-            <instance>wifidisplaysessionimagetrack</instance>
-        </interface>
-        <interface>
-            <name>IWifiDisplaySessionVideoTrack</name>
-            <instance>wifidisplaysessionvideotrack</instance>
         </interface>
     </hal>
     <hal format="hidl" optional="true">
@@ -1195,16 +1175,4 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <sepolicy>
-        <kernel-sepolicy-version>30</kernel-sepolicy-version>
-        <sepolicy-version>29.0</sepolicy-version>
-        <sepolicy-version>30.0</sepolicy-version>
-        <sepolicy-version>31.0</sepolicy-version>
-        <sepolicy-version>32.0</sepolicy-version>
-        <sepolicy-version>33.0</sepolicy-version>
-        <sepolicy-version>34.0</sepolicy-version>
-    </sepolicy>
-    <avb>
-        <vbmeta-version>1.0</vbmeta-version>
-    </avb>
 </compatibility-matrix>
