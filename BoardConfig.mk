@@ -1,27 +1,26 @@
 #
-# Copyright (C) 2023 The Android Open Source Project
+# Copyright (C) 2024 The Android Open Source Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-DEVICE_PATH := device/xiaomi/houji
 
 # A/B
 AB_OTA_UPDATER := true
 
 AB_OTA_PARTITIONS += \
     boot \
-    init_boot \
-    vendor_boot \
     dtbo \
-    vbmeta \
-    vbmeta_system \
+    init_boot \
     odm \
     product \
+    recovery \
     system \
     system_ext \
     system_dlkm \
+    vbmeta \
+    vbmeta_system \
     vendor \
+    vendor_boot \
     vendor_dlkm
 
 # Architecture
@@ -38,9 +37,10 @@ SOONG_CONFIG_ufsbsg += ufsframework
 SOONG_CONFIG_ufsbsg_ufsframework := bsg
 
 # Bootloader
-TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
+TARGET_BOARD_INFO_FILE := $(LOCAL_PATH)/board-info.txt
 TARGET_BOOTLOADER_BOARD_NAME := pineapple
 TARGET_NO_BOOTLOADER := true
+TARGET_USES_UEFI := true
 
 # Build
 BUILD_BROKEN_DUP_RULES := true
@@ -52,10 +52,7 @@ TARGET_SCREEN_DENSITY := 480
 
 # Fstab
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
-
-# Filesystem
-TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/configs/config/config.fs
+    $(LOCAL_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 
 # Kernel
 BOARD_KERNEL_PAGESIZE := 4096
@@ -76,11 +73,19 @@ BOARD_BOOTCONFIG := \
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 
+BOARD_INIT_BOOT_HEADER_VERSION := 4
+BOARD_MKBOOTIMG_INIT_ARGS += --header_version $(BOARD_INIT_BOOT_HEADER_VERSION)
+
 BOARD_KERNEL_IMAGE_NAME := Image
 
-BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_RAMDISK_USE_LZ4 := true
-BOARD_USES_GENERIC_KERNEL_IMAGE := true
+TARGET_KERNEL_APPEND_DTB := false
+BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_INCLUDE_DTB_IN_BOOTIMG := false
+TARGET_FORCE_PREBUILT_KERNEL := true
+
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilts/kernel
+BOARD_PREBUILT_DTBOIMAGE := $(LOCAL_PATH)/prebuilts/dtbo.img
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -105,6 +110,10 @@ BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 8317304832
 BOARD_PARTITION_LIST := $(call to-upper, $(BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST))
 $(foreach p, $(BOARD_PARTITION_LIST), $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs))
 
+
+#BOARD_PREBUILT_ODMIMAGE := $(LOCAL_PATH)/prebuilts/odm.img
+#BOARD_PREBUILT_VENDORIMAGE := $(LOCAL_PATH)/prebuilts/vendor.img
+
 TARGET_COPY_OUT_ODM := odm
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
@@ -120,16 +129,15 @@ BOARD_USES_QCOM_HARDWARE := true
 TARGET_BOARD_PLATFORM := pineapple
 TARGET_BOARD_SUFFIX := _64
 
-# Power
-TARGET_POWERHAL_MODE_EXT := $(DEVICE_PATH)/power/power-mode.cpp
-
 # Recovery
-BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true
-BOARD_USES_RECOVERY_AS_BOOT := false
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.qcom
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_USES_RECOVERY_AS_BOOT := false
+BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := false
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
@@ -137,13 +145,19 @@ ENABLE_VENDOR_RIL_SERVICE := true
 # Sepolicy
 include device/qcom/sepolicy_vndr/SEPolicy.mk
 
-# VINTF
-DEVICE_MATRIX_FILE := $(DEVICE_PATH)/configs/vintf/compatibility_matrix.xml
-DEVICE_MANIFEST_SKUS := pineapple
-DEVICE_MANIFEST_PINEAPPLE_FILES := $(DEVICE_PATH)/configs/vintf/manifest_pineapple.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := 
-    $(DEVICE_PATH)/configs/vintf/compatibility_matrix.device.xml \
-    vendor/lineage/config/device_framework_matrix.xml
+# Vendor boot
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(LOCAL_PATH)/prebuilts/modules/ramdisk/*.ko)
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/ramdisk/modules.load))
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(LOCAL_PATH)/prebuilts/modules/ramdisk/modules.blocklist
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/ramdisk/modules.load.recovery))
+
+# Vendor_dlkm
+BOARD_VENDOR_RAMDISK_FRAGMENTS := dlkm
+BOARD_VENDOR_RAMDISK_FRAGMENT.dlkm.KERNEL_MODULE_DIRS := top
+
+BOARD_VENDOR_KERNEL_MODULES := $(wildcard $(LOCAL_PATH)/prebuilts/modules/vendor/*.ko)
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/vendor/modules.load))
+BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE :=  $(LOCAL_PATH)/prebuilts/modules/vendor/modules.blocklist
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
@@ -160,6 +174,9 @@ BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+
+# VINTF
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(LOCAL_PATH)/configs/vintf/compatibility_matrix.device.xml
 
 # Inherit from the proprietary version
 -include vendor/xiaomi/houji/BoardConfigVendor.mk

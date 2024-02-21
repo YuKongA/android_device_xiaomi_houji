@@ -27,6 +27,7 @@ cc_library {
     cflags: [
         "-Wall",
         "-Werror",
+        "-Wno-unused-parameter",
         "-D_BSG_FRAMEWORK_KERNEL_HEADERS",
     ],
     srcs: [
@@ -34,8 +35,5 @@ cc_library {
         "recovery-ufs-bsg.cpp",
     ],
     owner: "qti",
-    header_libs: [
-        "generated_kernel_headers",
-    ],
     export_include_dirs: ["."],
 }

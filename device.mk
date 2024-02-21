@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2023 The Android Open Source Project
+# Copyright (C) 2024 The Android Open Source Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -50,6 +50,18 @@ PRODUCT_PACKAGES += \
     libboot_control_qti \
     libgptutils.pineapple
 
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
+
+# Dtb
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilts/dtb:dtb.img
+
+# Fastbootd
+PRODUCT_PACKAGES += \
+    android.hardware.fastboot@1.1-impl-mock \
+    fastbootd
+
 # Health
 PRODUCT_PACKAGES += \
     android.hardware.health-service.xiaomi \
@@ -65,23 +77,21 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/keylayout/uinput-goodix.kl:$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/uinput-goodix.kl
 
 # Partitions
-PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_BUILD_SUPER_PARTITION := true
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# Perf
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.perf@2.3
+
+# Power
+PRODUCT_PACKAGES += \
+    android.hardware.power-service-qti
 
 # Rootdir
 PRODUCT_PACKAGES += \
-    charger_fw_fstab.qti \
-    fstab.qcom \
-    init.class_main.sh \
-    init.qcom.class_core.sh \
-    init.qcom.early_boot.sh \
-    init.qcom.post_boot.sh \
-    init.qcom.rc \
-    init.qcom.sh \
     init.recovery.qcom.rc \
-    init.target.rc \
-    ueventd.qcom.rc \
-    ueventd-odm.rc
+    init.recovery.usb.rc
 
 # Shipping API
 PRODUCT_SHIPPING_API_LEVEL := 34
@@ -92,12 +102,20 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Telephony
 PRODUCT_PACKAGES += \
+    extphonelib \
+    extphonelib-product \
+    extphonelib.xml \
+    extphonelib_product.xml \
     ims-ext-common \
     ims_ext_common.xml \
     qti-telephony-hidl-wrapper \
+    qti-telephony-hidl-wrapper-prd \
     qti_telephony_hidl_wrapper.xml \
+    qti_telephony_hidl_wrapper_prd.xml \
     qti-telephony-utils \
+    qti-telephony-utils-prd \
     qti_telephony_utils.xml \
+    qti_telephony_utils_prd.xml \
     telephony-ext
 
 PRODUCT_BOOT_JARS += \
@@ -115,3 +133,4 @@ PRODUCT_PACKAGES_DEBUG += \
 # Vendor API
 BOARD_API_LEVEL := 34
 BOARD_SHIPPING_API_LEVEL := 34
+PRODUCT_TARGET_VNDK_VERSION := 34

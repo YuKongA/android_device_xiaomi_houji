@@ -19,6 +19,7 @@ cc_library {
     cflags: [
         "-Wall",
         "-Werror",
+        "-Wno-unused-parameter",
     ],
     srcs: [
         "libboot_control_qti.cpp",
