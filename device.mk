@@ -41,7 +41,8 @@ PRODUCT_PACKAGES += \
     otapreopt_script
 
 # Boot animation
-TARGET_BOOT_ANIMATION_RES := 1200
+TARGET_SCREEN_HEIGHT := 2670
+TARGET_SCREEN_WIDTH := 1200
 
 # Boot control
 PRODUCT_PACKAGES += \
@@ -90,6 +91,7 @@ PRODUCT_PACKAGES += \
 
 # Rootdir
 PRODUCT_PACKAGES += \
+    fstab.qcom.vendor_ramdisk \
     init.recovery.qcom.rc \
     init.recovery.usb.rc
 
