@@ -7,8 +7,8 @@
 # Call the proprietary setup.
 $(call inherit-product, vendor/xiaomi/houji/houji-vendor.mk)
 
-# Inherit Virtual A/B compression makefiles.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+# Inherit Virtual A/B makefiles.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
 # Enable project quotas and casefolding for emulated storage without sdcardfs.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
