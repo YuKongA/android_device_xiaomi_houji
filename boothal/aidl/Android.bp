@@ -39,8 +39,8 @@ cc_binary {
 }
 
 cc_binary {
-    name: "android.hardware.boot-service.qti.recovery",
+    name: "android.hardware.boot-service.qti_recovery",
     defaults: ["android.hardware.boot-service.qti.common"],
-    init_rc: ["android.hardware.boot-service.qti.recovery.rc"],
+    init_rc: ["android.hardware.boot-service.qti_recovery.rc"],
     recovery: true,
 }

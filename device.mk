@@ -85,9 +85,9 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.perf@2.3
 
-# Power
-PRODUCT_PACKAGES += \
-    android.hardware.power-service-qti
+# # Power
+# PRODUCT_PACKAGES += \
+#     android.hardware.power-service-qti
 
 # Rootdir
 PRODUCT_PACKAGES += \
