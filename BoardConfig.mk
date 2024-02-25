@@ -37,7 +37,7 @@ SOONG_CONFIG_ufsbsg += ufsframework
 SOONG_CONFIG_ufsbsg_ufsframework := bsg
 
 # Bootloader
-TARGET_BOARD_INFO_FILE := $(LOCAL_PATH)/board-info.txt
+TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
 TARGET_BOOTLOADER_BOARD_NAME := pineapple
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
@@ -86,21 +86,21 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := false
 TARGET_FORCE_PREBUILT_KERNEL := true
 
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilts/kernel
-BOARD_PREBUILT_DTBOIMAGE := $(LOCAL_PATH)/prebuilts/dtbo.img
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilts/kernel
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilts/dtbo.img
 
 # Kernel modules
-BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/system_dlkm/modules.load))
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/vendor_boot/modules.load))
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(LOCAL_PATH)/prebuilts/modules/vendor_boot/modules.blocklist
-BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/vendor_boot/modules.load.recovery))
-BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(LOCAL_PATH)/prebuilts/modules/vendor_dlkm/modules.load))
-BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE :=  $(LOCAL_PATH)/prebuilts/modules/vendor_dlkm/modules.blocklist
+BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilts/modules/system_dlkm/modules.load))
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilts/modules/vendor_boot/modules.load))
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(DEVICE_PATH)/prebuilts/modules/vendor_boot/modules.blocklist
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilts/modules/vendor_boot/modules.load.recovery))
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilts/modules/vendor_dlkm/modules.load))
+BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE :=  $(DEVICE_PATH)/prebuilts/modules/vendor_dlkm/modules.blocklist
 
 PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilts/modules/system_dlkm/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/lib/modules/6.1.25) \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilts/modules/vendor_boot/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilts/modules/vendor_dlkm/,$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules) 
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)/prebuilts/modules/system_dlkm/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/lib/modules/6.1.25) \
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)/prebuilts/modules/vendor_boot/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)/prebuilts/modules/vendor_dlkm/,$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules) 
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -126,8 +126,8 @@ BOARD_PARTITION_LIST := $(call to-upper, $(BOARD_QTI_DYNAMIC_PARTITIONS_PARTITIO
 $(foreach p, $(BOARD_PARTITION_LIST), $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs))
 
 
-#BOARD_PREBUILT_ODMIMAGE := $(LOCAL_PATH)/prebuilts/odm.img
-#BOARD_PREBUILT_VENDORIMAGE := $(LOCAL_PATH)/prebuilts/vendor.img
+#BOARD_PREBUILT_ODMIMAGE := $(DEVICE_PATH)/prebuilts/odm.img
+#BOARD_PREBUILT_VENDORIMAGE := $(DEVICE_PATH)/prebuilts/vendor.img
 
 TARGET_COPY_OUT_ODM := odm
 TARGET_COPY_OUT_PRODUCT := product
@@ -145,7 +145,7 @@ TARGET_BOARD_PLATFORM := pineapple
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 BOARD_HAS_LARGE_FILESYSTEM := true
@@ -176,7 +176,7 @@ BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
 # VINTF
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(LOCAL_PATH)/configs/vintf/compatibility_matrix.device.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/configs/vintf/compatibility_matrix.device.xml
 
 # Inherit from the proprietary version
 -include vendor/xiaomi/houji/BoardConfigVendor.mk
