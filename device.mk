@@ -7,8 +7,8 @@
 # Call the proprietary setup.
 $(call inherit-product, vendor/xiaomi/houji/houji-vendor.mk)
 
-# Inherit Virtual A/B compression makefiles.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+# Inherit Virtual A/B makefiles.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
 # Enable project quotas and casefolding for emulated storage without sdcardfs.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
@@ -46,7 +46,7 @@ TARGET_BOOT_ANIMATION_RES := 1200
 # Boot control
 PRODUCT_PACKAGES += \
     android.hardware.boot-service.qti \
-    android.hardware.boot-service.qti_recovery \
+    android.hardware.boot-service.qti.recovery \
     libboot_control_qti \
     libgptutils.pineapple
 
